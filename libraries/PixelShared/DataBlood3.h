@@ -1,0 +1,102 @@
+//generated pixeldata
+#ifndef _DataBlood3_h
+#define _DataBlood3_h
+#include "PixelData.h"
+class DataBlood3:public PixelData{ 
+public:
+    DataBlood3()
+   {
+       width =7;
+        height=3;
+       centerX=3;
+        centerY=3;
+        int size =width*height;
+        color = new uint8_t[size*3];
+        alpha = new uint8_t[size];
+        color[0] =128;
+        color[1] =0;
+        color[2] =0;
+        alpha[0] =255;
+        color[3] =128;
+        color[4] =0;
+        color[5] =0;
+        alpha[1] =0;
+        color[6] =216;
+        color[7] =255;
+        color[8] =252;
+        alpha[2] =0;
+        color[9] =216;
+        color[10] =255;
+        color[11] =252;
+        alpha[3] =0;
+        color[12] =216;
+        color[13] =255;
+        color[14] =252;
+        alpha[4] =0;
+        color[15] =128;
+        color[16] =0;
+        color[17] =0;
+        alpha[5] =0;
+        color[18] =128;
+        color[19] =0;
+        color[20] =0;
+        alpha[6] =255;
+        color[21] =128;
+        color[22] =0;
+        color[23] =0;
+        alpha[7] =0;
+        color[24] =128;
+        color[25] =0;
+        color[26] =0;
+        alpha[8] =0;
+        color[27] =128;
+        color[28] =0;
+        color[29] =0;
+        alpha[9] =0;
+        color[30] =216;
+        color[31] =255;
+        color[32] =252;
+        alpha[10] =0;
+        color[33] =128;
+        color[34] =0;
+        color[35] =0;
+        alpha[11] =0;
+        color[36] =128;
+        color[37] =0;
+        color[38] =0;
+        alpha[12] =0;
+        color[39] =128;
+        color[40] =0;
+        color[41] =0;
+        alpha[13] =0;
+        color[42] =128;
+        color[43] =0;
+        color[44] =0;
+        alpha[14] =0;
+        color[45] =128;
+        color[46] =0;
+        color[47] =0;
+        alpha[15] =255;
+        color[48] =128;
+        color[49] =0;
+        color[50] =0;
+        alpha[16] =0;
+        color[51] =216;
+        color[52] =255;
+        color[53] =252;
+        alpha[17] =0;
+        color[54] =128;
+        color[55] =0;
+        color[56] =0;
+        alpha[18] =0;
+        color[57] =128;
+        color[58] =0;
+        color[59] =0;
+        alpha[19] =255;
+        color[60] =128;
+        color[61] =0;
+        color[62] =0;
+        alpha[20] =0;
+   };
+};
+#endif
