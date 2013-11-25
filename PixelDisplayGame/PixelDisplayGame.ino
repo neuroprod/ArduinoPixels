@@ -10,7 +10,7 @@
  #define PSTR // Make Arduino Due happy
 #endif
 #ifndef ARDUINOGAME
- #define ARDUINOGAME// Make Arduino Due happy
+ #define ARDUINOGAME
 #endif
 
 //#include <Adafruit_NeoPixel.h>
@@ -53,9 +53,9 @@ void loop() {
    {
               // chekBrightness =false;
                 incomingByte = Serial3.read();
-                Serial.println((int)incomingByte);
+                
                 pixelMain.setInput((int)incomingByte);
-              
+             
                 
     }
 
@@ -63,3 +63,4 @@ void loop() {
     pixelMain.draw();
 }
   
+
