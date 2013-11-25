@@ -10,13 +10,108 @@
 
 void PixelMain::setupGameVS()
 {
+   
+        DecorSprite * city  = new  DecorSprite();
+        city ->currentData =cityData;
+        
+        city->fx = city->fxReal = 30;
+        
+        city->fy =7;
+        city->depth =0.2;
+        
+        decorVS.push_back(city);
+   
+    int posTreeFar [3] = { 16,25, 77 };
+    for(int i=0;i<3;i++)
+    {
+        DecorSprite * treeFar  = new  DecorSprite();
+        treeFar ->currentData =treeFarData;
+        treeFar ->fx  =treeFar ->fxReal =  posTreeFar[i] ;
+        int rPos = -rand()%2;
+        treeFar ->fy = -rand()%2+treeFarData->height;
+        treeFar ->depth=0.3;
+        if( rPos ==-1) treeFar ->depth=0.4;
+        
+        
+        decorVS.push_back(treeFar );
+    }
+    
+   
+        DecorSprite * treeClose  = new  DecorSprite();
+        
+        treeClose->currentData =treeCloseData;
+        treeClose->fx = treeClose->fxReal = 50;
+ 
+        treeClose->fy =13;
+        treeClose->depth =1;
+       
+       
+        
+        decorVS.push_back(treeClose );
     
     
-    for (int i=0;i<4;i++)
+    
+    DecorSprite * bush  = new  DecorSprite();
+    
+    bush->currentData =bushData;
+    bush->fx = bush->fxReal = 35;
+   
+    bush->fy = 13;
+    bush->depth =1;
+  
+
+    
+    decorVS.push_back(bush);
+    int posFlower[6] = { 12,28, 77,55,23,45};
+    
+   
+    for(int i=0;i<10;i++)
+    {
+        DecorSprite * flower  = new  DecorSprite();
+        flower ->currentData =flowerData;
+        
+        flower->fx = flower->fxReal = posFlower[i];
+        int rPos = -rand()%4;
+        flower->fy = rPos+15;
+        flower->depth =1;
+        if( rPos ==-2)  flower->depth=0.98;
+        if( rPos ==-3)  flower->depth=0.95;
+        
+        
+        decorVS.push_back( flower);
+    }
+    bool sorted =false;
+    while(!sorted){
+        sorted  =true;
+        for (int i=0;i<   decorVS.size()-1;i++)
+        {
+            if(decorVS[i]->depth >decorVS[i+1]->depth)
+            {
+                DecorSprite *temp = decorVS[i];
+                decorVS[i] = decorVS[i+1];
+                decorVS[i+1] = temp;
+                sorted  =false ;
+            }
+        }
+    }
+    for (int i=0;i<   decorVS.size();i++)
+    {
+        stageVS.addChild( decorVS[i]);
+        
+    }
+    
+    for (int i=0;i<6;i++)
     {
         SpecialAttack *attack =new SpecialAttack();
-        attack->ball =ballAttackG;
-        attack->stroke =strokeAttackG;
+        attack->girlShoot1 = girlShoot1;
+        attack->girlShoot2 = girlShoot2;
+        
+        attack->boyShoot1 = boyShoot1;
+        attack->boyShoot2 = boyShoot2;
+        
+        attack->alienShoot1 = alienShoot1;
+        attack->alienShoot2 = alienShoot2;
+
         attack->setup();
         specialAttackBufferVS.push_back(attack);
         stageVS.addChild( attack);
@@ -59,7 +154,10 @@ liveVS.push_back( heroVSM);
     lifeGirlHolderVS->addChild( lifeGirlVS);
     
     
-    
+    gameOverTextVS = new GameOverText();
+    gameOverTextVS->fy = 0;
+    gameOverTextVS->fx = 0;
+    stageVS.addChild(   gameOverTextVS );
     
     
     
@@ -71,11 +169,11 @@ void PixelMain::resetGameVS()
     lifeBoyHolderVS->fy =16;
     lifeGirlHolderVS->fx =104;
     lifeGirlHolderVS->fy =16;
-    lifeGirlVS->setLive(7);
-    lifeBoyVS->setLive(7);
+    lifeGirlVS->reset();
+    lifeBoyVS->reset();
     
     
-    lifeBoy1p->setLive(7);
+   
     lifeBoyHolder1p->fx =-15;
     lifeBoyHolder1p->fy =16;
     
@@ -84,13 +182,13 @@ void PixelMain::resetGameVS()
      heroVSM->fx =20;
     heroVSM->fy = -16;
     heroVSM->isAir =true;
-    
+    heroVSM->reset();
     
     heroVSF->fxReal = 70;
     heroVSF->fx =70;
     heroVSF->fy = -16;
     heroVSF->isAir =true;
-    
+     heroVSF->reset();
     
     
  
@@ -98,6 +196,26 @@ void PixelMain::resetGameVS()
 }
 void PixelMain::updateGameVS(float timeElapsed)
 {
+    if (gameState == STATE_GAME_OVER)
+    {
+        switchTime -=timeElapsed;
+        gameOverTextVS->update(switchTime);
+       /* if( switchTime>8&& switchTime<9)
+        {
+        
+            gameOverTextVS->fy = backEaseOut(1-(switchTime-8),0,15,1);
+        } if( switchTime<8)
+        {
+        
+            gameOverTextVS->fy = 15;
+        }*/
+        if(switchTime<0)
+        {
+            gameOverTextVS->hide();
+            setGameState(STATE_INTRO);
+            return;
+        }
+}
     if (gameState == STATE_GAME_START)
     {
         
@@ -121,7 +239,7 @@ void PixelMain::updateGameVS(float timeElapsed)
     
     
     resolveShoot(liveVS,specialAttackBufferVS);
-  
+  checkShoot(liveVS,specialAttackBufferVS,bloodBufferVS);
     
     
     
@@ -129,13 +247,17 @@ void PixelMain::updateGameVS(float timeElapsed)
     heroVSF->update(timeElapsed);
     
  
-    resolveAttack(liveVS);
+    resolveAttack(liveVS,bloodBufferVS);
     
+        
     for (int i=0;i<specialAttackBufferVS.size();i++)
     {
-        specialAttackBufferVS[i]->update(timeElapsed);
-        
+        specialAttackBufferVS[i]->update(timeElapsed,stagefx);
     }
+    
+    
+    
+    
     //
     //chek hit etc
     
@@ -159,7 +281,24 @@ void PixelMain::updateGameVS(float timeElapsed)
 
     }
 
-      
+    if(heroVSF->fxReal<5)
+    {
+    heroVSF->fxReal =84;
+    
+    }if(heroVSF->fxReal>85)
+    {
+        heroVSF->fxReal =6;
+        
+    }
+    if(heroVSM->fxReal<5)
+    {
+        heroVSM->fxReal =84;
+        
+    }if(heroVSM->fxReal>85)
+    {
+        heroVSM->fxReal =6;
+        
+    }
     //
     //
     heroVSM->setLevelPos(stagefx);
@@ -167,19 +306,44 @@ void PixelMain::updateGameVS(float timeElapsed)
     
    
 
-    /*for (int i=0;i<   decorVS.size();i++)
+    for (int i=0;i<   decorVS.size();i++)
     {
         decorVS[i]->setLevelPos(stagefx);
-    }*/
+    }
     for (int i=0;i<3;i++)
     {
         cloudsVS[i]->update(timeElapsed);
         
     }
+    for (int i=0;i<bloodBufferVS.size();i++)
+    {
+        bloodBufferVS[i]->update(timeElapsed,stagefx);
+        
+    }
+    if(heroVSF->life==0 && gameState ==STATE_GAME)
+    {
+        gameOverTextVS->show(1);
+        
+        setGameState(STATE_GAME_OVER); ;
+   
+
+   
     
+    }
+    if(heroVSM->life==0&& gameState ==STATE_GAME)
+    {
+        gameOverTextVS->show(2);
+        
+        setGameState(STATE_GAME_OVER); ;
+        
+        
+        
+        
+    }
+    lifeGirlVS->setLife(heroVSF->life);
+    lifeBoyVS->setLife(heroVSM->life);
     
     lifeBoyVS->update(timeElapsed);
     lifeGirlVS->update(timeElapsed);
-    
-
+  
 }

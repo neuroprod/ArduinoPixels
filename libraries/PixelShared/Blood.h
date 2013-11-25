@@ -29,7 +29,7 @@ public:
         currentData = frame1;
     }
     
-    void update(float timeElapsed)
+    void update(float timeElapsed,float stagefx)
     {
         if(visible==false)return;
         
@@ -46,9 +46,17 @@ public:
             isUsed =false;
             visible =false;
         }
+          setLevelPos(stagefx);
+    }
+    void setLevelPos(float stagefx)
+    {
+        fx = fxReal -stagefx;
+        
         
     }
     
+    
+    float fxReal;
     float currentTime;
    bool isUsed;
     PixelData *frame1;

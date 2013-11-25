@@ -11,6 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0125B8CD183CA98400E42AD0 /* SoundPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundPlayer.h; sourceTree = "<group>"; };
 		018E51CE17E5CC86009FCE3F /* PixelRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PixelRenderer.cpp; sourceTree = "<group>"; };
 		01E86C15180033DE009C6D95 /* PixelShared */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PixelShared; path = ../PixelShared; sourceTree = "<group>"; };
 		01E86C2418072611009C6D95 /* PixelGameInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PixelGameInclude.h; sourceTree = "<group>"; };
@@ -32,6 +33,7 @@
 		01FE5D7F17E5BBFC00294417 = {
 			isa = PBXGroup;
 			children = (
+				0125B8CD183CA98400E42AD0 /* SoundPlayer.h */,
 				01FE5D9117E5BC1500294417 /* src */,
 				01FE5D8B17E5BBFC00294417 /* Products */,
 			);

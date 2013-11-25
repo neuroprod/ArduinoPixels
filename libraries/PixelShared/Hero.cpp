@@ -11,6 +11,12 @@
 
 
 
+void  Hero::hitWater()
+{
+
+    isWaterHit =true;
+    setKey(0);
+}
 
 
 
@@ -42,6 +48,30 @@ void Hero::setup(int type)
     
        
 }
+void Hero::reset()
+{
+    speed=0;
+    airFall =120;
+    jumpSpeed =-50;
+    isWalking =false;
+    groundY =15;
+    attackTime =0;
+    attackType =NO_ATTACK;
+    setKey(0);
+    currentData =  standData ;
+    hitX=0;
+    hitY=0;
+    life=7;
+    saveTime =0;
+    startShoot =false;
+    isAir =true;
+    airSpeed =0;
+    hasHitRect =true;
+ isDead =false ;
+    isCrouchingWalking =false;
+    isWalking =false;
+
+}
 void Hero::setDead()
 {
     isDead =true;
@@ -68,7 +98,8 @@ void Hero::setKey(int key)
         }
                // 5 0 5 0 13
     }
-    
+  
+
     if(key==10)
     {
         if( attackTime<=0)
@@ -190,7 +221,21 @@ void Hero::setKey(int key)
 
 void Hero::update(float timeElapsed)
 {
+    if(isWaterHit)
+    {
+        fy +=timeElapsed*airSpeed;
+        airSpeed +=timeElapsed*airFall;
+        
+        if(fy>16+8){
+            fxReal -=20;
+            fy =0;
+            airSpeed =0;
+            isAir =true;
+            isWaterHit =false;
+        }
+        return;
     
+    }
     if(isDead)
     {
     
@@ -212,6 +257,13 @@ void Hero::update(float timeElapsed)
         }
             if(speed>20)speed =20;
         if(speed< -20)speed =-20;
+        
+        if (  isCrouching)
+        {
+            if(speed>10)speed =10;
+            if(speed< -10)speed =-10;
+        
+        }
         speedStepX = speed*timeElapsed;
     
     }else
@@ -222,7 +274,7 @@ void Hero::update(float timeElapsed)
     }
     
    fxReal+=speedStepX+hitSpeed* timeElapsed;
-    hitSpeed*=0.8;
+    hitSpeed*=0.87;
   
     if( saveTime>0)
     {
@@ -242,7 +294,7 @@ void Hero::update(float timeElapsed)
         
         if(fy> groundY)
         {
-        
+            airSpeed =0;
             fy =groundY;
             isAir =false;
             attackType =NO_ATTACK;
@@ -271,13 +323,13 @@ void Hero::update(float timeElapsed)
         
         }else if (attackType==KICK)
         {
-            hitX =5;
+            hitX =6;
             hitY =-2;
             currentData =   jumpKickData;   
         
         }else if (attackType==HIT)
         {
-            hitX =5;
+            hitX =6;
             hitY =-3;
             currentData =   jumpHitData;
             
@@ -300,14 +352,26 @@ void Hero::update(float timeElapsed)
         {
              currentData =    crouchData;
             //startWalking();
-            /*if(isRight)
+           startCrouching();
+            if(isCrouchingWalking)
             {
-                fxReal+=speed*timeElapsed*0.7;
-            }else
-            {
-                 fxReal-=speed*timeElapsed*0.7;
-                
-            }*/
+                walkingTime+=timeElapsed;
+                int walkPos = ((int)(walkingTime*12))%4;
+                if(walkPos ==0)
+                {
+                    currentData =    crouchData;
+                }else if(walkPos ==1)
+                {
+                    currentData =   crouchWalk1Data;
+                }else if(walkPos ==2)
+                {
+                    currentData =    crouchData;
+                }else if(walkPos ==3)
+                {
+                    currentData =    crouchWalk2Data;
+                }
+            }
+
         }
     
         
@@ -319,13 +383,13 @@ void Hero::update(float timeElapsed)
         {
             
             currentData =   crouchKickData;
-            hitX =5;
+            hitX =6;
             hitY =-1;
         }else if (attackType==HIT)
         {
             
             currentData =  crouchHitData;
-            hitX =5;
+            hitX =6;
             hitY =-2;
             
         }else if (attackType==BLOCK)
@@ -380,13 +444,13 @@ void Hero::update(float timeElapsed)
             
         }else if (attackType==KICK)
         {
-            hitX =5;
+            hitX =6;
             hitY =-1;
             currentData =   standKickData;
             
         }else if (attackType==HIT)
         {
-            hitX =5;
+            hitX =6;
             hitY =-3;
             if(hitType){
             currentData =  standHitData1;
@@ -435,14 +499,28 @@ void Hero::update(float timeElapsed)
 }
 void Hero::setLevelPos(float levelfx)
 {
-
+    
     fx =  fxReal-levelfx;
-   
+ //   if(rand()%200==0){
+     /*   Serial.print(fx);
+        Serial.print(" ");
+        Serial.print(fy);
+          Serial.print(" ");
+        Serial.println((int)currentData);*/
+   // }
 
 
 }
 
+void Hero::startCrouching()
+{
+    if(isCrouchingWalking )return;
+    walkingTime =0;
+    isCrouchingWalking =true ;
+    currentData =   walk1Data;
 
+
+}
 
 void Hero::startWalking()
 {

@@ -25,25 +25,33 @@
 #include "Life.h"
 #include "SpecialAttack.h"
 #include "Vector.h"
-#include "WinSprite.h"
+
 #include "SpaceShip.h"
 #include "Star.h"
 #include "DecorSprite.h"
 #include "Live.h"
-#define STATE_INTRO 0
-#define STATE_INTRO_TO_MENU 1
-#define STATE_MENU 2
-#define STATE_MENU_TO_GAME 3
-#define STATE_GAME_START 4
-#define STATE_GAME 5
+#include "Alien.h"
+#include "WaterSplash.h"
+#include "GameOverText.h"
+#include "SoundPlayer.h"
+#include "Alien3.h"
+#define STATE_INTRO 10
+#define STATE_INTRO_TO_MENU 11
+#define STATE_MENU 12
+#define STATE_MENU_TO_GAME 13
+#define STATE_GAME_START 14
+#define STATE_GAME 15
+#define STATE_GAME_OVER 16
 
-
-#define GAME_TYPE_1P 0
-#define GAME_TYPE_2P 1
-#define GAME_TYPE_VS 2
+#define GAME_TYPE_1P 100
+#define GAME_TYPE_2P 101
+#define GAME_TYPE_VS 102
 class PixelMain
 {
 public:
+    SoundPlayer soundPlayer;
+    Alien3 *alienBoss2p;
+    Alien3 *alienBoss1p;
     
     PixelRenderer * renderer;
     
@@ -111,7 +119,7 @@ public:
     Sprite * menuItem1;
     Sprite * menuItem2;
     Sprite * menuItem3;
-    
+    Sprite *menuBack;
     float menuSpeed  ;   int menuPos;
     
     
@@ -125,6 +133,9 @@ public:
     void updateGame(float timeElapsed);
     void setHeroData(Hero * hero,int type);
      void setLifeData(Life * life);
+    
+    void setAliens(const Vector<Alien *> &aliens);
+    
     Blood * getBlood(const Vector<Blood *> & bloods);
     SpecialAttack * getSpecialAttack(const Vector<SpecialAttack *> &attacs);
     
@@ -138,20 +149,40 @@ public:
     Vector<SpecialAttack *>specialAttackBufferVS;
     Vector<Blood *>bloodBufferVS;
     
-    
+    PixelData * frame1b;
+    PixelData * frame2b;
+    PixelData * frame3b;
    void  resolveShoot(const Vector<Live *> &lives,const Vector<SpecialAttack *> &attacs);
-   void  resolveAttack(const Vector<Live *> &lives);
+     void  checkShoot(const Vector<Live *> &lives,const Vector<SpecialAttack *> &attacs,const Vector<Blood *> &bloods);
+   void  resolveAttack(const Vector<Live *> &lives,const Vector<Blood *> &bloods);
+    
+      void alienHitTest(Hero * hero,const Vector<Alien *> &aliens,const Vector<Blood *> &bloods);
+    
     //shared
-    PixelData * ballAttackG;
-    PixelData * strokeAttackG;
+    
+    PixelData *  girlShoot1 ;
+    PixelData *  girlShoot2 ;
+    
+    PixelData * boyShoot1 ;
+    PixelData * boyShoot2;
+    
+    PixelData * alienShoot1;
+    PixelData * alienShoot2;
+
+     PixelData * splashFrame1;
+     PixelData * splashFrame2;
+    
+    
+    
+    
     DataThreeClose *treeCloseData;
         DataThreeFar *treeFarData;
         DataCloud1 *cloudData;
-        DataFlower *flowerData;
-
+        Dataflower *flowerData;
+PixelData *paddoData;
         PixelData * backGrass ;
      PixelData * cityData;
-    
+    PixelData * bushData;
     //heroData
     
         PixelData * jumpDataB;
@@ -161,6 +192,8 @@ public:
     
     
         PixelData * crouchDataB;
+    PixelData * crouchDataWalk1B;
+     PixelData * crouchDataWalk2B;
         PixelData * crouchKickDataB;
         PixelData * crouchHitDataB;
         PixelData * crouchBlockDataB;
@@ -188,6 +221,9 @@ public:
     
     
         PixelData * crouchDataG;
+        PixelData * crouchDataWalk1G;
+   
+        PixelData * crouchDataWalk2G;
         PixelData * crouchKickDataG;
         PixelData * crouchHitDataG;
         PixelData * crouchBlockDataG;
@@ -223,9 +259,16 @@ public:
     
         PixelData * lifeGlow;
     
-       
+     //////////
+    PixelData *alien1Head;
+     PixelData *alien1Feet;
     
-   
+    PixelData *alien2Head;
+    PixelData *alien2Feet;
+    
+    PixelData *alienPond;
+    PixelData *alienDuckBig;
+       PixelData *alienDuckSmall;
     //////////////////
     float stagefx;
     Hero * boyHero;
@@ -241,18 +284,20 @@ public:
     
     Hero *hero1pm;
     
+    Vector <Alien *> aliens1p;
     Sprite *lifeBoyHolder1p;
     Life *lifeBoy1p;
   
   Vector<Live *>live1p;
-    
-    
+    GameOverText *  gameOverText1p;
+    WaterSplash * waterSplash1p;
     //GAME 2 PLAYER
     
     void setupGame2p();
     void updateGame2p(float timeElapsed);
     void resetGame2p();
     Vector<Cloud *>clouds2p;
+      Vector <Alien *> aliens2p;
     Hero *hero2pM;
     Hero *hero2pF;
     Sprite *lifeBoyHolder2p;
@@ -260,7 +305,9 @@ public:
     Life * lifeGirl2p;
     Life *lifeBoy2p;
      Vector<Live *>live2p;
-    
+        GameOverText *  gameOverText2p;
+       Vector<DecorSprite *>decor2p;
+    WaterSplash * waterSplash2p;
     //GAME VS
     
     void setupGameVS();
@@ -277,7 +324,8 @@ public:
 
      Vector<Live *>liveVS;
     
-    
+       Vector<DecorSprite *>decorVS;
+     GameOverText *  gameOverTextVS;
     
     void resetGame();
     bool readyToStart;
@@ -287,7 +335,7 @@ public:
    
    
     
- 
+    bool endGame ;
   
     
     int brightness;
@@ -323,10 +371,10 @@ public:
     }
     
     
-    
-    
-    
+       
     
 };
+
+
 
 #endif

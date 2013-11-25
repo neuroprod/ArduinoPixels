@@ -20,7 +20,7 @@ public:
     
     
     }
-    float fxReal;
+  
     float depth;
 
 };

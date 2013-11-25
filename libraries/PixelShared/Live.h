@@ -13,8 +13,8 @@ class Live :public Sprite
 {
 
 public:
-    Live(){startShoot =false;hitSpeed =0;hitFall=0;};
-    
+    Live(){startShoot =false;hitSpeed =0;hitFall=0;saveTime =0;};
+    virtual void setDead(){isDead =true;};
     
     float speed;
     bool startShoot;
@@ -22,7 +22,7 @@ public:
     int attackType;
     int hitX;
     int hitY;
-    
+    bool isDead;
     int life;
     float saveTime;
     float hitSpeed;

@@ -13,9 +13,10 @@
 #include "DataFlower.h"
 #include "DataCity.h"
 #include "DataPond.h"
+#include "DataBush.h"
 #include "DataInterface.h"
 #include "DataInterface2.h"
-#include "DataSpaceShip.h"
+
 #include "DataHitPointTest.h"
 
 
@@ -38,8 +39,12 @@
 #include "DataBlood2.h"
 #include "DataBlood3.h"
 
-#include "DataGirlBall.h"
-#include "DataGirlBallStroke1.h"
+#include "DataGirlShoot1.h"
+#include "DataGirlShoot2.h"
+#include "DataBoyShoot1.h"
+#include "DataBoyShoot2.h"
+#include "DataAlienShoot1.h"
+#include "DataAlienShoot2.h"
 
 #include "DataBackGrass.h"
 
@@ -104,9 +109,27 @@
 #include "DataGirlGotHit1.h"
 #include "DataGirlGotHit2.h"
 
+#include "DataAlien1Head.h"
+#include "DataAlien1Feed.h"
 
+#include "DataAlien2Head.h"
+#include "DataAlien2Feed.h"
+#include "DataPond.h"
+#include "DataDuckBig.h"
+#include "DataDuckSmall.h"
+#include "Alien1.h"
+#include "Alien2.h"
+#include "AlienPond.h"
+#include "DataPaddo.h"
 
+#include "DataSplash1.h"
+#include "DataSplash2.h"
 
+#include "DataManCrouchWalk1.h"
+#include "DataManCrouchWalk2.h"
+
+#include "DataGirlCrouchWalk1.h"
+#include "DataGirlCrouchWalk2.h"
 
 void PixelMain::allocGame()
 {
@@ -120,6 +143,13 @@ void PixelMain::allocGame()
     jumpBlockDataB =new DataManJumpBlock();
     
     crouchDataB =new DataManCrouch();
+    
+     crouchDataWalk1B =new DataManCrouchWalk1();
+     crouchDataWalk2B =new DataManCrouchWalk2();
+    crouchDataWalk1G =new DataGirlCrouchWalk1();
+    crouchDataWalk2G =new DataGirlCrouchWalk2();
+
+    
     crouchKickDataB =new DataManCrouchKick();
     crouchKickDataB->centerX-=1;
     crouchHitDataB =new DataManCrouchHit();
@@ -135,14 +165,14 @@ void PixelMain::allocGame()
     standBlockDataB =new DataManStandBlock();
     gotHit1B = new DataManGitHit1();
     gotHit2B = new DataManGitHit2();
-    
+    gotHit2B->centerY-=1;
     
     walk1DataB =new DataManWalk1();
     walk2DataB =new DataManWalk2();
     walk3DataB =new DataManWalk3();
     deathDataB =new DataBoyDeath();
     ///girl
-    jumpDataG = new DataGirlJump();
+  jumpDataG = new DataGirlJump();
     jumpKickDataG = new DataGirlJumpKick();
     jumpKickDataG->centerX-=1;
     jumpHitDataG=new DataGirlJumpHit();
@@ -157,6 +187,7 @@ void PixelMain::allocGame()
     
     standDataG = new DataGirlStand();
     standKickDataG =new DataGirlStandKick();
+    standKickDataG->centerX-=1;
     standHitData1G =new DataGirlStandHit1();
     standHitData1G->centerX-=1;
     standHitData2G =new DataGirlStandHit2();
@@ -172,19 +203,60 @@ void PixelMain::allocGame()
     deathDataG =new DataGirlDeath();
     gotHit1G = new DataGirlGotHit1();
     gotHit2G = new DataGirlGotHit2();
-
+gotHit2G->centerY-=1;
     //set the data
     setHeroData(hero1pm,0);
 
-    
+    setHeroData(hero2pF,1);
+    setHeroData(hero2pM,0);
     
      setHeroData(heroVSF,1);
      setHeroData(heroVSM,0);
+    boyInterData =  new DataInterface();
+    girlInterData = new DataInterface2();
+
+    lifeBoyHolder1p->currentData =boyInterData;
+
+    lifeBoyHolder2p->currentData =boyInterData;
+    lifeGirlHolder2p->currentData =girlInterData;
+    lifeBoyHolderVS->currentData =boyInterData;
+    lifeGirlHolderVS->currentData =girlInterData;
     
+    
+    
+    ///
+    alien1Head =new DataAlien1Head();
+    alien1Feet=new DataAlien1Feed();
+    
+    
+    alien2Head =new DataAlien2Head();
+    alien2Feet =new DataAlien2Feed();
+    
+    alienPond =new DataPond();
+    alienDuckBig =new DataDuckBig();
+    alienDuckSmall =new DataDuckSmall();
+    
+   
+    setAliens(aliens1p);
+    setAliens(aliens2p);
+    splashFrame1 = new DataSplash1();
+    splashFrame2 =new DataSplash2();
+    waterSplash1p->frame1 = splashFrame1;
+    waterSplash1p->frame2 = splashFrame2;
+    
+    waterSplash2p->frame1 = splashFrame1;
+    waterSplash2p->frame2 = splashFrame2;
 };
+
 void PixelMain::deallocGame()
 {
     if(jumpDataB ==0)return;
+    
+    
+    delete  boyInterData;
+    boyInterData =0;
+    delete  girlInterData;
+    girlInterData =0;
     
    //cout << "deallocgame"<<endl;
     delete jumpDataB;
@@ -193,6 +265,14 @@ void PixelMain::deallocGame()
 
     delete jumpHitDataB;
     delete jumpBlockDataB;
+    
+    
+    delete  crouchDataWalk1B ;
+    delete  crouchDataWalk2B;
+    delete  crouchDataWalk1G; 
+    delete  crouchDataWalk2G;
+    
+    
     
     delete crouchDataB;
     delete crouchKickDataB;
@@ -299,7 +379,10 @@ void PixelMain::deallocGame()
     
     standBlockDataG =0;
     
-    
+    crouchDataWalk1B=0 ;
+      crouchDataWalk2B=0;
+      crouchDataWalk1G=0;
+      crouchDataWalk2G=0;
     
     walk1DataG =0;
     walk2DataG =0;
@@ -308,30 +391,194 @@ void PixelMain::deallocGame()
     deathDataG =0;
     gotHit1G = 0;
     gotHit2G = 0;
+    
+    
+    delete alien1Head; 
+    delete alien1Feet;
+    alien1Head =0;
+    alien1Feet=0;
+    
+    
+    delete alien2Head ;
+     delete alien2Feet ;
+    
+    delete  alienPond ;
+   delete alienDuckBig ;
+    delete alienDuckSmall;
+ 
+    
+    alien2Head =0;
+    alien2Feet =0;
+    
+    alienPond =0;
+    alienDuckBig =0;
+    alienDuckSmall =0;
+    
+    
+    delete splashFrame1;
+    delete splashFrame2;
+    
+    splashFrame1 =0;
+    splashFrame2 =0;
+    
 };
 
+void PixelMain::setAliens(const Vector<Alien *> &aliens)
+{
+
+    for(int i=0;i<aliens.size();i++)
+    {
+        Alien * a = aliens[i];
+        if(a->heroType==2)
+        {
+            Alien1 * a1 = (Alien1 *) a;
+            a1->headSprite->currentData = alien1Head;
+           
+            a1->feetSprite->currentData = alien1Feet;
+        }
+        else if(a->heroType==3)
+        {
+            Alien2 * a1 = (Alien2 *) a;
+            a1->currentData = alien2Head;
+            a1->feet->currentData  =alien2Feet;
+           
+        }
+        else if(a->heroType==5)
+        {
+            AlienPond * a1 = (AlienPond *) a;
+            a1->currentData = alienPond;
+            
+            a1->duckBigSprite->currentData = alienDuckBig;
+             a1->duckSmallSprite->currentData = alienDuckSmall;
+        }
+    
+    }
 
 
+}
+void PixelMain::alienHitTest(Hero * hero,const Vector <Alien *> &aliens,const Vector<Blood *> &bloods)
+{
+    if(hero->saveTime >0)return;
+    for(int i=0;i<aliens.size();i++)
+    {
+        if(aliens[i]->intHidden)continue;
+    
+        if(  hero->hitTestRect(aliens[i]))
+        {
+            Alien * alien = aliens[i];
+            //water
+            if(alien->heroType==5)
+            {
+                
+                hero->life --;
+             
 
-void  PixelMain::resolveAttack(const Vector<Live *> &lives)
+                
+                if(hero->life==0){
+                    hero->setDead();
+                    
+                }else
+                {
+                    hero->hitWater();
+                    hero-> saveTime =0.3;
+                }
+                if(gameType == GAME_TYPE_1P)
+                {
+
+                    
+                    waterSplash1p->show(hero->fxReal);
+                }
+                if(gameType == GAME_TYPE_2P)
+                {
+                    
+                    
+                    waterSplash2p->show(hero->fxReal);
+                }
+            
+            }else{
+            
+                if(alien->fxReal > hero->fxReal)
+                {
+                    hero->hitSpeed =-35;
+               
+                }
+                else
+                {
+                    hero->hitSpeed =35;
+                }
+           
+                hero->speed =0;
+                hero->life --;
+            
+            
+                if(hero->life==0){
+                    hero->setDead();
+               
+                }
+           
+            
+                hero->hitFall =rand()%2;
+                hero->saveTime =0.8;
+            
+                Blood * blood =getBlood(bloods);
+                if(blood!=0)
+                {
+                    blood->fxReal = hero->fxReal ;
+                    blood->fy= hero->fy -4;
+                    blood->show();
+
+                }
+            }
+        }
+    
+    }
+
+    
+
+
+}
+
+
+void  PixelMain::resolveAttack(const Vector<Live *> &lives,const Vector<Blood *> &bloods)
 {
 
     for(int j=0;j<lives.size();j++)
     {
+         if(lives[j]->intHidden)continue;
         Live *attacker=lives[j];
         if(attacker->attackType == HIT ||attacker->attackType == KICK )
         {
-            int hitPosX=attacker->x+attacker->hitX;
+            int hitPosX=attacker->fxReal+attacker->hitX;
             int hitPosY = attacker->y+attacker->hitY;
-            
-            
+           
             for(int i=0;i<lives.size();i++)
             {
+                    if( lives[i]->heroType==5)continue;
+                   if(lives[i]->intHidden)continue;
                 if(i==j)continue;
+                if(gameType == GAME_TYPE_2P)
+                {
+                  
+                    if(attacker->heroType==1 && lives[i]->heroType==0)
+                    {
+                       continue;
+                
+                    } if(attacker->heroType==0 && lives[i]->heroType==1)
+                    {
+                        continue;
+                        
+                    }
+                
+                
+                }
+                
+                if(lives[i]->saveTime>0  )return;
+                
                 bool hasHit = lives[i]->hitTest(hitPosX,hitPosY);
                
                 if(hasHit   )
                 {
+              //      Serial.println("hit");
                       Live *attackee=lives[i];
                     if(attackee->attackType==BLOCK && attackee->drawType !=attacker->drawType )
                     {
@@ -349,19 +596,18 @@ void  PixelMain::resolveAttack(const Vector<Live *> &lives)
                     {
                         if(attackee->x>attacker->x)
                         {
-                           attackee->hitSpeed =40;
+                           attackee->hitSpeed =35;
                         }else 
                         {
-                            attackee->hitSpeed =-40;
+                            attackee->hitSpeed =-35;
                         }
-                        // boyHero->attackPauze =0.5;
+                    
                         attackee->life --;
-                        //lifeGirl->setLive(girlHero->live);
                         
-                       /* if(attackee->life==0){
+                       if(attackee->life==0)
+                       {
                            attackee->setDead();
-                            setWin(boyHero->heroType);
-                        }*/
+                       }
                         if(attacker->drawType==1)
                             attackee->drawType =0;
                         else if (attacker->drawType==0)
@@ -370,13 +616,13 @@ void  PixelMain::resolveAttack(const Vector<Live *> &lives)
                         attackee->hitFall =rand()%2;
                        attackee->saveTime =0.8;
                         
-                        //  Blood * blood =getBlood();
-                      /*  if(blood!=0)
+                        Blood * blood =getBlood(bloods);
+                        if(blood!=0)
                         {
-                            blood->fx = hitPosX;
+                            blood->fxReal = hitPosX;
                             blood->fy= hitPosY;
                             blood->show();
-                        }*/
+                        }
                     }
                 }
 
@@ -389,7 +635,104 @@ void  PixelMain::resolveAttack(const Vector<Live *> &lives)
   
 
 }
+void  PixelMain::checkShoot(const Vector<Live *> &lives,const Vector<SpecialAttack *> &attacs,const Vector<Blood *> &bloods)
+{
 
+    for(int j=0;j<attacs.size();j++)
+    {
+        if(attacs[j]->isUsed)
+        {
+          
+            SpecialAttack * attack = attacs[j];
+            for(int i=0;i<lives.size();i++)
+            {
+                
+                if(gameType == GAME_TYPE_2P)
+                {
+                    
+                    if(attack->heroType==1 && lives[i]->heroType==0)
+                    {
+                        continue;
+                        
+                    } if(attack->heroType==0 && lives[i]->heroType==1)
+                    {
+                        continue;
+                        
+                    }
+                    
+                    
+                }
+
+                if( attack->heroType>1 && lives[i]->heroType>1)continue;
+            if( attack->heroType != lives[i]->heroType)
+            {
+              
+                if(lives[i]->hitTest(attack->fxReal, attack->fy) &&   lives[i]->saveTime<=0)
+                {
+                    Live *attackee=lives[i];
+                                    
+                    if(attackee->attackType==BLOCK && attack->drawType !=attackee->drawType )
+                    {
+                        if(attackee->x >  attack->x)
+                        {
+                            attackee->hitSpeed =20;
+                           
+                        }else
+                        {
+                           attackee->hitSpeed =-20;
+                        }
+                         attackee->speed =0;
+                        attack-> hit();
+                    }
+                    else
+                    {
+                        if(attackee->x>attack->x)
+                        {
+                            attackee->hitSpeed =35;
+                        }else
+                        {
+                            attackee->hitSpeed =-35;
+                        }
+                        //playSound(SOUND_HIT);
+                        attackee->life --;
+                        
+                        if(attackee->life==0)
+                        {
+                            attackee->setDead();
+                        }
+                        if(attack->drawType==1)
+                            attackee->drawType =0;
+                        else if (attack->drawType==0)
+                            attackee->drawType =1;
+                        
+                        attackee->hitFall =rand()%2;
+                        attackee->saveTime =0.8;
+                        
+                        Blood * blood =getBlood(bloods);
+                        if(blood!=0)
+                        {
+                            blood->fxReal = attack->fxReal;
+                            blood->fy= attack->fy;
+                            blood->show();
+                        }
+                         attack-> hit();
+                    }
+
+                
+                
+                
+                }
+            
+            
+            }
+        
+        }
+    
+        }
+    
+    }
+
+}
 void  PixelMain::resolveShoot(const Vector<Live *> &lives,const  Vector<SpecialAttack *> &attacts)
 {
     for(int i=0;i< lives.size();i++)
@@ -399,9 +742,10 @@ void  PixelMain::resolveShoot(const Vector<Live *> &lives,const  Vector<SpecialA
         lives[i]->startShoot =false;
         SpecialAttack * attack=getSpecialAttack(attacts);
         if(attack){
-            attack->fx =lives[i]->x+4;
-            if(lives[i]->drawType==1)attack->fx-=7;
-            attack->fy =lives[i]->y-1;
+            attack->fxReal =lives[i]->fxReal +4;
+            if(lives[i]->drawType==1)attack->fxReal -=7;
+            
+            attack->fy =lives[i]->y-2;
             attack->start(lives[i]->drawType, lives[i]->heroType);
         }
     }
@@ -434,6 +778,7 @@ SpecialAttack * PixelMain::getSpecialAttack(const  Vector<SpecialAttack *> &atta
 
 void  PixelMain::resetGame()
 {
+    endGame  =false;
     stagefx =0;
     resetGame1p();
     resetGame2p();
@@ -446,12 +791,19 @@ void PixelMain::setupGame()
     cloudData =new DataCloud1();
     treeCloseData =new DataThreeClose();
     treeFarData= new DataThreeFar() ;
-    flowerData = new DataFlower();
-    
+    flowerData = new Dataflower();
+    bushData =new DataBush();
     cityData = new DataCity();
-    
+    paddoData = new DataPaddo();
   
     backGrass  =  new DataBackGrass();
+    
+     frame1b =new DataBlood1();
+    frame2b =new DataBlood2();
+    frame2b->centerY =2;
+   frame3b =new DataBlood3();
+    frame3b->centerY =0;
+    
     
     for(int i =0;i<3;i++)
     {
@@ -481,6 +833,9 @@ void PixelMain::setupGame()
             if(i==2) cloudsVS.push_back(c);
             stage->addChild(c);
         }
+       
+        
+        
     }
     
     
@@ -546,9 +901,7 @@ void PixelMain::setupGame()
     gotHit1G = 0;
     gotHit2G = 0;
  ///life data
-   boyInterData =  new DataInterface();
-   girlInterData = new DataInterface2();
-  
+   
     
     
     
@@ -568,8 +921,14 @@ void PixelMain::setupGame()
 //////
     //attacs
     
-   ballAttackG=new DataGirlBall();
-   strokeAttackG=new DataGirlBallStroke1();
+    girlShoot1 = new DataGirlShoot1();
+    girlShoot2 = new DataGirlShoot2();
+    
+    boyShoot1 = new DataBoyShoot1();
+    boyShoot2 = new DataBoyShoot2();
+    
+    alienShoot1 = new DataAlienShoot1();
+    alienShoot2 = new DataAlienShoot2();
 
     
     //////
@@ -796,7 +1155,8 @@ void  PixelMain::setHeroData(Hero * hero,int type)
         hero->walk3Data =walk3DataB;
         hero->deathData = deathDataB;
     
-    
+        hero->crouchWalk1Data = crouchDataWalk1B;
+         hero->crouchWalk2Data = crouchDataWalk2B;
     }else if(type==1)
     {
     
@@ -816,7 +1176,8 @@ void  PixelMain::setHeroData(Hero * hero,int type)
         hero->standHitData2 =standHitData2G;
         hero->standBlockData =standBlockDataG;
         
-        
+        hero->crouchWalk1Data = crouchDataWalk1G;
+        hero->crouchWalk2Data = crouchDataWalk2G;
         
         hero->walk1Data =walk1DataG ;
         hero->walk2Data =walk2DataG;

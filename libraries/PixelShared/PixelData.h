@@ -15,17 +15,17 @@
 class PixelData
 {
 public:
-    PixelData(){color =0;alpha=0;};
+    PixelData(){color =0;indices=0;};
     ~PixelData() {
     
         delete [] color ;
         color  =0;
-        delete [] alpha ;
-        alpha =0;
+        delete [] indices ;
+        indices =0;
     
     }
     uint8_t *color;
-    uint8_t * alpha;
+    uint8_t * indices;
     int width;
     int height;
     int centerX;

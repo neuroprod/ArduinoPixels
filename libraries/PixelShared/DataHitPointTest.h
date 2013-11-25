@@ -11,16 +11,14 @@ public:
        centerX=1;
         centerY=1;
         int size =width*height;
-        color = new uint8_t[size*3];
-        alpha = new uint8_t[size];
-        color[0] =201;
+        indices= new uint8_t[size];
+        indices[0]=0;
+        indices[1]=0;
+        color= new uint8_t[4];
+        color[0] =237;
         color[1] =28;
-        color[2] =35;
-        alpha[0] =255;
-        color[3] =201;
-        color[4] =28;
-        color[5] =35;
-        alpha[1] =255;
+        color[2] =36;
+        color[3] =255;
    };
 };
 #endif

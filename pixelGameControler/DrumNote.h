@@ -16,8 +16,8 @@ class DrumNote :public note
       count=0;
       modulus=2;
       lenght = 300000;
-      power =4;
-      masterVol =0.2;
+      power =2;
+      masterVol =0.5;
       
       
     };
@@ -47,14 +47,13 @@ class DrumNote :public note
         return 0;
       }
    
-      if(count%modulus==0)
-      {
+      
          unsigned long currentTime = time-startTime;
          float volume =1.0f-((float)currentTime/lenght);
          if(volume>1)volume=1;
-         out=random(0,60*pow(volume,power)  -0.5)* masterVol;
+         out=random(0,70*pow(volume,power)  -0.5)* masterVol;
      
-      }
+      
      count++;
      
      return out;   

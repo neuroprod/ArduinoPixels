@@ -44,6 +44,9 @@ public:
             drawfX= fx + parent->drawfX;
             x = drawfX;
             y = drawfY;
+            intHidden = false;
+            if(x>100 || x<-10)intHidden = true;
+            
             
         }
         for(int i=0;i<children.size();i++)
@@ -53,9 +56,10 @@ public:
     
     }
     
-    
+    bool intHidden;
     int x;
     int y;
+    float fxReal;
     float fx;
     float fy;
     float drawfY;
@@ -76,8 +80,8 @@ public:
     }*/
     bool hitTestRect(Sprite *s)
     {
-        float x_1 =fx+hitRect.x ;
-        float x_2 =s->fx +s->hitRect.x ;
+        float x_1 =fxReal+hitRect.x ;
+        float x_2 =s->fxReal +s->hitRect.x ;
         float y_1 =fy +hitRect.y ;
         float y_2 =s->fy +s->hitRect.y ;
         float width_1 =hitRect.width;
@@ -97,7 +101,7 @@ public:
     }
     bool hitTest(int hitPosX,int hitPosY)
     {
-        float x_l =fx+hitRect.x ;
+        float x_l =fxReal+hitRect.x ;
         float y_t =fy+hitRect.y ;
         float x_r =x_l +hitRect.width ;
         float y_b =y_t+hitRect.height ;

@@ -43,7 +43,6 @@
 		012228BC1813FD56005453E6 /* Live.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Live.h; path = ../../../../../Arduino/libraries/PixelShared/Live.h; sourceTree = "<group>"; };
 		012228BD18151E4C005453E6 /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Vector.h; path = ../../../../../Arduino/libraries/PixelShared/Vector.h; sourceTree = "<group>"; };
 		012228BE1816B515005453E6 /* SpecialAttack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SpecialAttack.h; path = ../../../../../Arduino/libraries/PixelShared/SpecialAttack.h; sourceTree = "<group>"; };
-		012228BF1816D5DC005453E6 /* WinSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WinSprite.h; path = ../../../../../Arduino/libraries/PixelShared/WinSprite.h; sourceTree = "<group>"; };
 		012228C318192854005453E6 /* PixelMain_Intro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PixelMain_Intro.cpp; path = ../../../../../Arduino/libraries/PixelShared/PixelMain_Intro.cpp; sourceTree = "<group>"; };
 		012228C618192888005453E6 /* PixelMain_Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PixelMain_Game.cpp; path = ../../../../../Arduino/libraries/PixelShared/PixelMain_Game.cpp; sourceTree = "<group>"; };
 		012228CC181A598A005453E6 /* Star.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Star.h; path = ../../../../../Arduino/libraries/PixelShared/Star.h; sourceTree = "<group>"; };
@@ -56,7 +55,14 @@
 		012228E5181EA90B005453E6 /* Alien.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Alien.h; path = ../../../../../Arduino/libraries/PixelShared/Alien.h; sourceTree = "<group>"; };
 		012228E6181ECB8D005453E6 /* npRect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = npRect.h; path = ../../../../../Arduino/libraries/PixelShared/npRect.h; sourceTree = "<group>"; };
 		012228E7181FBF45005453E6 /* Live.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Live.h; path = ../../../../../Arduino/libraries/PixelShared/Live.h; sourceTree = "<group>"; };
+		0125B8C9183CA91600E42AD0 /* SoundPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundPlayer.h; sourceTree = "<group>"; };
+		016BACC118250E9400CB2BCD /* Alien1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Alien1.h; path = ../../../../../Arduino/libraries/PixelShared/Alien1.h; sourceTree = "<group>"; };
+		016BACED1827939D00CB2BCD /* Alien2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Alien2.h; path = ../../../../../Arduino/libraries/PixelShared/Alien2.h; sourceTree = "<group>"; };
+		016BACEF1827959600CB2BCD /* Alien3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Alien3.h; path = ../../../../../Arduino/libraries/PixelShared/Alien3.h; sourceTree = "<group>"; };
+		016BACF118279C7200CB2BCD /* AlienPond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AlienPond.h; path = ../../../../../Arduino/libraries/PixelShared/AlienPond.h; sourceTree = "<group>"; };
+		016BACF81828EDFE00CB2BCD /* GameOverText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GameOverText.h; path = ../../../../../Arduino/libraries/PixelShared/GameOverText.h; sourceTree = "<group>"; };
 		0181595017DDBFC800C44766 /* PixelRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PixelRenderer.h; sourceTree = "<group>"; };
+		01E57FFA1839F51C00119325 /* WaterSplash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WaterSplash.h; path = ../../../../../Arduino/libraries/PixelShared/WaterSplash.h; sourceTree = "<group>"; };
 		01E86C0918001D76009C6D95 /* PixelShared */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PixelShared; path = ../../../../../Arduino/libraries/PixelShared; sourceTree = "<group>"; };
 		01E86C17180037D1009C6D95 /* PixelMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PixelMain.cpp; path = ../../../../../Arduino/libraries/PixelShared/PixelMain.cpp; sourceTree = "<group>"; };
 		01E86C20180094AB009C6D95 /* Hero.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Hero.cpp; path = ../../../../../Arduino/libraries/PixelShared/Hero.cpp; sourceTree = "<group>"; };
@@ -101,7 +107,6 @@
 				00BAE6590E7ED9C10018A608 /* pixelgameApp.cpp */,
 				01E86C22180695DD009C6D95 /* PixelGameInclude.h */,
 				0181595017DDBFC800C44766 /* PixelRenderer.h */,
-				012228BF1816D5DC005453E6 /* WinSprite.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -144,6 +149,13 @@
 		29B97314FDCFA39411CA2CEA /* pixelgame */ = {
 			isa = PBXGroup;
 			children = (
+				0125B8C9183CA91600E42AD0 /* SoundPlayer.h */,
+				01E57FFA1839F51C00119325 /* WaterSplash.h */,
+				016BACF81828EDFE00CB2BCD /* GameOverText.h */,
+				016BACF118279C7200CB2BCD /* AlienPond.h */,
+				016BACEF1827959600CB2BCD /* Alien3.h */,
+				016BACED1827939D00CB2BCD /* Alien2.h */,
+				016BACC118250E9400CB2BCD /* Alien1.h */,
 				012228E7181FBF45005453E6 /* Live.h */,
 				012228E6181ECB8D005453E6 /* npRect.h */,
 				012228E5181EA90B005453E6 /* Alien.h */,
@@ -182,8 +194,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107310486CEB800E47090 /* Info.plist */,
 				00CCAF14116A9FEE008396D5 /* CinderApp.icns */,
+				8D1107310486CEB800E47090 /* Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

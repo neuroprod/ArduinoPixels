@@ -17,4 +17,12 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
+/*#define SOUND_HIT 200
+
+void playSound(int type)
+{
+
+
+}
+*/
 #endif

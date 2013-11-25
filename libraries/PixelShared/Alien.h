@@ -8,21 +8,35 @@
 
 #ifndef PixelGameLocal_Alien_h
 #define PixelGameLocal_Alien_h
-#include "DecorSprite.h"
+#include "Live.h"
 
-class Alien :public DecorSprite
+class Alien :public Live
 {
 public:
-    Alien();
-    
-    
-    void update(float timeElapsed)
+    Alien(){hasHitRect =true; isDead =false;};
+      virtual void setDead()
+    {
+        
+        isDead =true;
+    };
+    virtual void reset()
+    {
+        
+        
+    }
+   virtual void update(float timeElapsed)
     {
     
     
     }
-
-}
+    void setLevelPos(float levelfx)
+    {
+        fx =  fxReal-levelfx;
+        
+    }
+    float fxStart;
+    bool isDead;
+};
 
 
 #endif

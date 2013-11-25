@@ -48,8 +48,33 @@ public:
     
     void drawSprite(Sprite * s )
     {
+       /* if(s->hasHitRect && s->currentData==0)
+        {
+            if(s->hitRect.isHit)
+            {
+                mixPixel(s->x+s->hitRect.x,s->y+s->hitRect.y, 255,0,255,255 );
+                mixPixel(s->x+s->hitRect.x+s->hitRect.width,s->y+s->hitRect.y+s->hitRect.height, 255,0,255,255 );
+                
+                
+            }else
+            {
+                mixPixel(s->x+s->hitRect.x,s->y+s->hitRect.y, 0,255,0,255 );
+                mixPixel(s->x+s->hitRect.x+s->hitRect.width,s->y+s->hitRect.y+s->hitRect.height, 0,255,0,255 );
+                mixPixel(s->x+s->hitRect.x+s->hitRect.width,s->y+s->hitRect.y, 0,255,0,255 );
+                mixPixel(s->x+s->hitRect.x,s->y+s->hitRect.y+s->hitRect.height, 0,255,0,255 );
+
+                
+            }
+
+        
+        
+        }*/
+        
+        if(s->intHidden)return;
         if(!s->visible)return;
+      
         if(s->currentData==0)return;
+          if(s->currentData->indices==0)return;
         int sx =s->x;
         int sy=s->y;
       
@@ -70,12 +95,13 @@ public:
                 int xPos  =xp+sx-xOff;
                 
                 if(xPos<0 || xPos>=stageWidth)continue;
-                int pixelPosA =(pixelPosY+xp);
-                uint8_t a = s->currentData->alpha[pixelPosA];
-                if(a==0)continue;
-                int pixelPos =pixelPosA*3;
+                int pixelPosIndex =(pixelPosY+xp);
+                   
+                uint8_t index = s->currentData->indices[pixelPosIndex];
+                if( index==255)continue;
+              
          
-                mixPixel(xPos,yPos,s->currentData->color[pixelPos],s->currentData->color[pixelPos+1],s->currentData->color[pixelPos+2],a);
+                mixPixel(xPos,yPos,s->currentData->color[index],s->currentData->color[index+1],s->currentData->color[index+2],s->currentData->color[index+3]);
                  
                 
         
@@ -97,14 +123,13 @@ public:
                     int xPos  =xp+sx-(s->currentData->width -xOff);
                     
                     if(xPos<0 || xPos>stageWidth)continue;
-                    int pixelPosA = (pixelPosY+s->currentData->width-1 -xp);
-                    uint8_t a = s->currentData->alpha[pixelPosA];
-                    if(a==0)continue;
-                    int pixelPos =pixelPosA*3;
-                    
-                    mixPixel(xPos,yPos,s->currentData->color[pixelPos],s->currentData->color[pixelPos+1],s->currentData->color[pixelPos+2],a);
+                    int pixelPosIndex =pixelPosY+s->currentData->width-1 -xp;
+              
+                    uint8_t index = s->currentData->indices[pixelPosIndex];
+                    if( index==255)continue;
                     
                     
+                    mixPixel(xPos,yPos,s->currentData->color[index],s->currentData->color[index+1],s->currentData->color[index+2],s->currentData->color[index+3]);
                     
                 }
             }
@@ -124,16 +149,13 @@ public:
                     int xPos  =xp+sx;
                     
                     if(xPos<0 || xPos>stageWidth)continue;
-                    int pixelPosA =(pixelPosY);
-                    uint8_t a = s->currentData->alpha[pixelPosA];
                    
-                    int pixelPos =pixelPosA*3;
-                   // mixPixel(xPos,yPos,10,10,20,a);
-                    
-
-                    mixPixel(xPos,yPos,s->currentData->color[pixelPos],s->currentData->color[pixelPos+1],s->currentData->color[pixelPos+2],a);
+                    int pixelPosIndex =(pixelPosY);
+                    uint8_t index = s->currentData->indices[pixelPosIndex];
+                    if( index==255)continue;
                     
                     
+                    mixPixel(xPos,yPos,s->currentData->color[index],s->currentData->color[index+1],s->currentData->color[index+2],s->currentData->color[index+3]);
                     
                 }
             }
@@ -141,7 +163,7 @@ public:
         
         }
      
-        if(s->hasHitRect)
+    /*if(s->hasHitRect)
         {
             //
             if(s->hitRect.isHit)
@@ -152,23 +174,26 @@ public:
             
             }else
             {
+                
                 mixPixel(s->x+s->hitRect.x,s->y+s->hitRect.y, 0,255,0,255 );
                 mixPixel(s->x+s->hitRect.x+s->hitRect.width,s->y+s->hitRect.y+s->hitRect.height, 0,255,0,255 );
-            
+                mixPixel(s->x+s->hitRect.x+s->hitRect.width,s->y+s->hitRect.y, 0,255,0,255 );
+                mixPixel(s->x+s->hitRect.x,s->y+s->hitRect.y+s->hitRect.height, 0,255,0,255 );
+
             
             }
            
             
-        }
+        }*/
         
         
     };
     void mixPixel(int x,int y,uint8_t r,uint8_t g,uint8_t b,uint8_t a )
     {
        
-        int ri =(int)r;
-        int gi =(int)g;
-        int bi =(int)b;
+        //int ri =(int)r;
+        //int gi =(int)g;
+        //int bi =(int)b;
        
            
            renderer->setPixel(x,y,r,g,b,a);

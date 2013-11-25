@@ -19,28 +19,51 @@ public:
     
     void setup()
     {
-        extra =new Sprite();
-        extra->currentData =stroke;
-        extra->fx =4;
-         extra->fy =-1;
-        addChild(extra);
-        isUsed =false;
+              isUsed =false;
+        visible=false;
+      
     }
     
     void start(int dir, int type)
     {
+        if(type>1)
+        {
+            if(dir ==1) dir =0;
+            else dir =1;
+        }
+        
         heroType =type;
-        currentData =ball;
+        if(type ==0)
+        {
+            shoot1=boyShoot1  ;
+            shoot2  =boyShoot2;
+        
+        }
+        else if(type ==1)
+        {
+             shoot1=girlShoot1  ;
+             shoot2  =girlShoot2;
+            
+        }else
+        {
+            shoot1=alienShoot1  ;
+            shoot2  =alienShoot2;
+        
+        }
+
+        
+        
         visible=true;
-         extra->visible=true;
         speed =40;
-         extra->fx =-4;
+       
         if(dir==1){
-             extra->fx =4;
+            
             speed =-speed;
         }
         lastTime =2;
         isUsed =true;
+        _dir =dir;
+        drawType =dir;
        // speed = rand()%4 +3;
     }
     void hit()
@@ -49,37 +72,55 @@ public:
         
         isUsed =false;
         visible=false;
-        extra->visible=false;
+       
     }
-    void update(float timeElapsed)
+    void update(float timeElapsed,float stagefx)
     {
         if(visible==false)return;
-        fx+=speed*timeElapsed;
+       fxReal+=speed*timeElapsed;
         lastTime -=timeElapsed;
         if(x%4==0 || x%4==1)
         {
-        extra->drawType=1;
+            currentData = shoot1;
+          
         }else
         {
-            extra->drawType=0;
+              currentData  = shoot2;
         }
         
-        if(lastTime<0)
+        if(x<-5 || x>90)
         {
             isUsed =false;
             visible=false;
-              extra->visible=false;
         }
+        setLevelPos(stagefx);
     }
-    
+    void setLevelPos(float stagefx)
+    {
+        fx = fxReal -stagefx;
+        
+        
+    }
+    float fxReal;
     
     float lastTime;
     float speed;
     bool isUsed;
-    PixelData *ball;
-    PixelData *stroke;
+    PixelData *  shoot1 ;
+    PixelData *  shoot2 ;
+    
+    
+    PixelData *  girlShoot1 ;
+    PixelData *  girlShoot2 ;
+    
+    PixelData * boyShoot1 ;
+    PixelData * boyShoot2;
+    
+    PixelData * alienShoot1;
+    PixelData * alienShoot2;
+    int _dir;
     int heroType;
-    Sprite *extra;
+   
    
 };
 

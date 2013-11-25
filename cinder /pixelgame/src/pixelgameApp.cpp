@@ -36,14 +36,16 @@ class pixelgameApp : public AppBasic {
     void setKeysR();
     double previousTime ;
     PixelMain pixelMain;
+    bool lock;
    };
 
 void pixelgameApp::setup()
 {
-    setWindowSize(90*13, 16*13);
+    setWindowSize(90*13+20, 16*13+20);
     pixelMain.setup();
     previousTime =ci::app::getElapsedSeconds();
-    gl::enableVerticalSync();
+    gl::disableVerticalSync();
+     lock =true;
 }
 
 void pixelgameApp::mouseDown( MouseEvent event )
@@ -52,10 +54,10 @@ void pixelgameApp::mouseDown( MouseEvent event )
 
 void pixelgameApp::update()
 {
-    double currentTime = ci::app::getElapsedSeconds();
+   /* double currentTime = ci::app::getElapsedSeconds();
     
     pixelMain.update(currentTime-previousTime);
-    previousTime =currentTime;
+    previousTime =currentTime;*/
     // count++;
     //if(count>90)count =0;
    // renderer.setPixel(count,rand()%16,rand()%250,rand()%250,rand()%250);
@@ -63,16 +65,23 @@ void pixelgameApp::update()
 
 void pixelgameApp::draw()
 {
+    lock =true;
+    double currentTime = ci::app::getElapsedSeconds();
+    
+    pixelMain.update(currentTime-previousTime);
+    previousTime =currentTime;
+
    
 	// clear out the window with black
-	gl::clear( Color( 0.3, 0.1, 0.1 ) );
+	gl::clear( Color( 1, 1, 1 ) );
     pixelMain.draw();
+      lock =false ;
 }
 
 void pixelgameApp::keyDown(KeyEvent event)
 {
     //console()<< KeyEvent::KEY_RIGHT << " "<< event.getCode()<<endl;
-    
+    if( lock)return;
     if(event.getCode()==KeyEvent::KEY_ESCAPE)
     {
         //v
@@ -172,6 +181,7 @@ void pixelgameApp::keyDown(KeyEvent event)
 }
 void pixelgameApp::keyUp(KeyEvent event)
 {
+      if( lock)return;
     if(event.getCode()==KeyEvent::KEY_ESCAPE)
     {
     

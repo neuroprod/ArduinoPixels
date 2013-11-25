@@ -15,14 +15,17 @@ PixelMain::PixelMain()
 }
 void PixelMain::setGameState(int state)
 {
- gameState =state;
+
   
-    if( gameState == STATE_INTRO)
+    if( state == STATE_INTRO)
     {
+      //  Serial.print("free ram");
+        //Serial.println( freeRam ());
         deallocGame();
         allocIntro();
+        resetIntro();
         stageIntro.fy =0;
-    }else if(gameState == STATE_INTRO_TO_MENU  )
+    }else if(state == STATE_INTRO_TO_MENU  )
     {
         switchTime =1;
         //cout << switchTime <<endl;
@@ -30,32 +33,44 @@ void PixelMain::setGameState(int state)
         
           
     
-    }else if( gameState == STATE_MENU_TO_GAME)
-    {
-        allocGame();
-        resetGame();   
-        switchTime =1;
-        
-    }else if(gameState == STATE_MENU )
+    }else if(state == STATE_MENU )
     {
         deallocInto();
         
         stageMenu.fy =0;
         
         
-    }else if(gameState == STATE_GAME )
+    }else if( state == STATE_MENU_TO_GAME)
     {
         
-        //stage.fx =0;
+        allocGame();
+        resetGame();
+      
+        switchTime =1;
         
-    }else if(gameState == STATE_GAME_START)
+    }else if(state == STATE_GAME )
     {
-        deallocMenu();
+        
+      // Serial.print("free ram");
+        //Serial.println( freeRam ());        //stage.fx =0;
+        
+    }else if(state == STATE_GAME_START)
+    {
+          deallocMenu();
+       
         //stage.fx =0;
         switchTime =1;
         
+    }else if(state == STATE_GAME_OVER)
+    {
+        
+        
+        //stage.fx =0;
+        switchTime =10;
+        
     }
- 
+  //  cout <<state<<endl ;
+  gameState =state;
 }
 void PixelMain::setup()
 {
@@ -74,8 +89,8 @@ void PixelMain::setup()
     setupGame();
     
     setupGame1p();
-    setupGame2p();
-    setupGameVS();
+   setupGame2p();
+   setupGameVS();
     
     setGameState(STATE_INTRO);
     
@@ -103,7 +118,10 @@ void PixelMain::setInput(int key)
         {
         
         //select
-            gameType = menuPos;
+            if(menuPos==0){ gameType =GAME_TYPE_1P;}
+            else if(menuPos==1){ gameType =GAME_TYPE_2P;}
+            else{ gameType =GAME_TYPE_VS;}
+            
             
          setGameState(STATE_MENU_TO_GAME);
         
@@ -112,7 +130,7 @@ void PixelMain::setInput(int key)
         if(key==17|| key==37) menuLeft();
     
     }
-    else if(gameState==STATE_GAME)
+    else if(gameState==STATE_GAME|| gameState == STATE_GAME_OVER)
     {
 
         if(gameType ==GAME_TYPE_1P)
@@ -123,10 +141,11 @@ void PixelMain::setInput(int key)
         {
             boyHero =heroVSM;
             girlHero =heroVSF;
-        }else
+        }else if(gameType ==GAME_TYPE_2P)
         {
         
-            return;
+            boyHero =hero2pM;
+            girlHero =hero2pF;
         
         }
 
@@ -177,7 +196,7 @@ void PixelMain::update(float timeElapsed)
 {
     
   
-    renderer->setBrightness(brightness);
+   renderer->setBrightness(brightness);
     
     if(gameState==STATE_INTRO)
     {
@@ -205,7 +224,7 @@ void PixelMain::update(float timeElapsed)
         
     }else if(gameState==STATE_MENU)
     {
-        
+         //renderer->setBrightness(brightness);
         updateMenu( timeElapsed);
         stageMenu.int_update();
         stageMenu.draw(&stageMenu);
@@ -245,10 +264,11 @@ void PixelMain::update(float timeElapsed)
             setGameState(STATE_GAME_START);
             stageVS.fy =0;
             stage2p.fy =0;
+            stage1p.fy =0;
         }
         
     }
-    else if (gameState==STATE_GAME || gameState==STATE_GAME_START )
+    else if (gameState==STATE_GAME || gameState==STATE_GAME_START || gameState==STATE_GAME_OVER )
     {
        
 
@@ -256,23 +276,26 @@ void PixelMain::update(float timeElapsed)
                 
             updateGame1p(timeElapsed);
             updateGame(timeElapsed);
+            if (gameState==STATE_GAME || gameState==STATE_GAME_START || gameState==STATE_GAME_OVER ){
             stage1p.int_update();
-            stage1p.draw(&stage1p);
+                stage1p.draw(&stage1p);}
             
         }
         else  if(gameType == GAME_TYPE_2P){
                 
             updateGame2p(timeElapsed);
             updateGame(timeElapsed);
+            if (gameState==STATE_GAME || gameState==STATE_GAME_START || gameState==STATE_GAME_OVER ){
             stage2p.int_update();
-            stage2p.draw(&stage2p);
+                stage2p.draw(&stage2p);}
         }
         if(gameType == GAME_TYPE_VS){
                 
             updateGameVS(timeElapsed);
             updateGame(timeElapsed);
+            if (gameState==STATE_GAME || gameState==STATE_GAME_START || gameState==STATE_GAME_OVER ){
             stageVS.int_update();
-            stageVS.draw(&stageVS);
+                stageVS.draw(&stageVS);}
         }
       
     

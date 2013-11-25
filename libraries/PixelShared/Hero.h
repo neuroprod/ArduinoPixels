@@ -28,19 +28,25 @@ public:
         isCrouching =false;
         isDead =false;
         hitType=0;
-        
+        currentData=0;
+        isWaterHit =false;
+        isCrouchingWalking =false;
     };
     bool hitType;
-    float fxReal;
+   
    
     void setKey(int key);
     void setup(int type);
     void update(float timeElapsed);
     void startWalking();
+    void startCrouching();
     void setLevelPos(float levelfx);
+    void reset();
     void setDead();
+        void hitWater();
+    bool isWaterHit;
     float walkingTime;
-  
+    bool isCrouchingWalking;
     float screenfx;
     bool isDead;
     bool nonMove;
@@ -69,6 +75,8 @@ public:
     
     
     PixelData * crouchData;
+    PixelData * crouchWalk1Data;
+    PixelData * crouchWalk2Data;
     PixelData * crouchKickData;
     PixelData * crouchHitData;
     PixelData * crouchBlockData;

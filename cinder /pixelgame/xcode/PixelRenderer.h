@@ -38,7 +38,7 @@ public:
     {
         height =16;
         width =90;
-        int size = height*width*3 ;
+         size = height*width*3 ;
         buffer =new float[size];
         for(int i=0;i<size;i++)
         {
@@ -49,7 +49,7 @@ public:
     };
     void clear()
     {
-        int size = height*width*3;
+        size = height*width*3;
      
         for(int i=0;i<size;i++)
         {
@@ -63,7 +63,8 @@ public:
     {
    
         int pos = (x+(y*width))*3;
-      
+        if(pos>size-3)return;
+        if (pos<0)return;
         if(a==255)
         {
             buffer[pos]=(float)r/255.f;
@@ -107,11 +108,11 @@ public:
         {
             for(int x=0;x<width;x++)
             {
-                
-              
-                
-                 glColor3f(buffer[pos++],buffer[pos++],buffer[pos++]);
-                    cinder::gl::drawSolidRect( cinder::Rectf(x*(size),y*(size),x*(size)+size,y*(size)+size));
+                float  r =buffer[pos++];
+              float  g =buffer[pos++];
+                 float  b =buffer[pos++];
+                 glColor3f(r,g,b);
+                    cinder::gl::drawSolidRect( cinder::Rectf(x*(size)+10,y*(size)+10,x*(size)+size+10,y*(size)+size+10));
             }
         }    
     
@@ -119,7 +120,7 @@ public:
     float * buffer;
     int height;
     int width;
-
+    int size;
 
 };
 

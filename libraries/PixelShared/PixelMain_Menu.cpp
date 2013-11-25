@@ -21,8 +21,8 @@ void PixelMain::setupMenu()
     backgroundMenu->drawType =3;
     backgroundMenu->currentData =new DataBackSky();
     stageMenu.addChild(backgroundMenu);
-    Sprite *menuBack  =new Sprite();
-    menuBack->currentData = new DataMenuMain();
+    menuBack  =new Sprite();
+    //menuBack->currentData = new DataMenuMain();
     menuBack->fx =45;
       menuBack->fy =11;
     stageMenu.addChild(menuBack);
@@ -59,6 +59,7 @@ void PixelMain::allocMenu()
         menuItem1->currentData  = new  DataMenuSelect1();
         menuItem2->currentData  = new  DataMenuSelect2();
         menuItem3->currentData  = new DataMenuSelect3();
+        menuBack->currentData = new DataMenuMain();
     }
 
 }
@@ -68,9 +69,11 @@ void PixelMain::deallocMenu()
     delete    menuItem1->currentData  ;
     delete   menuItem2->currentData  ;
     delete  menuItem3->currentData ;
+      delete   menuBack->currentData ;
     menuItem1->currentData  = 0;
     menuItem2->currentData  = 0;
     menuItem3->currentData  = 0;
+    menuBack->currentData =0;
    
 }
 void PixelMain::menuRight()

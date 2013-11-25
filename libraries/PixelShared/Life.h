@@ -27,7 +27,7 @@ public:
     PixelData * lifeGlow;
     Sprite *glow;
     float currentTime;
-    
+    int lifeCount;
     void setup()
     {
         glow  =new Sprite();
@@ -38,20 +38,27 @@ public:
         glow->visible =false;
     
     }
-    void setLive(int i )
+    void reset()
     {
-        
-        if(i==7)currentData = life7;
-        else if(i==6)currentData = life6;
+        currentData = life7;
+        lifeCount =7;
+    
+    }
+    void setLife(int i )
+    {
+        if(lifeCount==i)return;
+        lifeCount = i;
+        if(i==6)currentData = life6;
         else if(i==5)currentData = life5;
         else if(i==4)currentData = life4;
         else if(i==3)currentData = life3;
         else if(i==2)currentData = life2;
         else if(i==1)currentData = life1;
         else if(i==0)currentData = life0;
-        
+       
           glow->visible =true;
-        currentTime =1;
+            currentTime =1;
+       
         
     }
     void update(float timeElapsed)

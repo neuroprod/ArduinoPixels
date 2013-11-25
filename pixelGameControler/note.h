@@ -29,7 +29,7 @@ public:
  virtual void start(unsigned long time)
   {
     startTime = time;
-    endTime = time+duration+200000;
+    endTime = time+duration;
     releaseTime= time+duration;
     isEnd =false;
   };
@@ -47,7 +47,7 @@ public:
      /// return random()*200;
       
      unsigned long currentTime = time-startTime;
-     float volume =10;
+     float volume =30;
    //float rPos =time-releaseTime;
    // if(rPos>0){ volume*=rPos/200000;}
      

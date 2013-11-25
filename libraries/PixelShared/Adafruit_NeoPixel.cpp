@@ -832,8 +832,8 @@ void Adafruit_NeoPixel::setPixelColor(
     
         float alpha = (float)a/255;
         float alpha1 =1-alpha ;
-        r = (float)*pr*alpha1 +(float)r*alpha;
-        g = (float)*pg*alpha1 +(float)g *alpha;
+        r = (float)*pr*alpha1 +(float)g*alpha;
+        g = (float)*pg*alpha1 +(float)r *alpha;
         b  = (float)*pb*alpha1 +(float)b *alpha;
     }
     *pr = g;
